@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiteSmith Studio | Kichik biznes uchun saytlar</title>
+<meta name="description" content="Kafe, sartaroshxona, oʻquv markazi va doʻkonlar uchun saytlar. Oʻzbek va rus tilida. Avval bepul namunani koʻrasiz, yoqsa toʻlaysiz.">
+<meta property="og:title" content="SiteSmith Studio: kichik biznes uchun saytlar">
+<meta property="og:image" content="img/barber-phone.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Commissioner:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --steel: #e8ebef;      /* the anvil */
+    --steel-2: #d7dce3;
+    --iron: #16181d;       /* the hammer */
+    --iron-2: #2a2e36;
+    --ember: #ff5a1f;      /* the spark */
+    --muted: #5d6470;
+    --white: #fff;
+    --display: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
+    --body: "Commissioner", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+  html, body { overflow-x: clip; }
+  body { margin: 0; background: var(--steel); color: var(--iron); font: 17px/1.6 var(--body); }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  :focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1140px, 100% - 40px); margin-inline: auto; }
+
+  header .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 22px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 18px var(--display); }
+  .logo i { width: 14px; height: 14px; background: var(--ember); transform: rotate(45deg); border-radius: 2px; }
+  .langs { display: flex; gap: 2px; background: var(--white); border-radius: 999px; padding: 3px; }
+  .langs button { all: unset; cursor: pointer; font: 700 13px var(--body); padding: 6px 12px; border-radius: 999px; color: var(--muted); }
+  .langs button[aria-pressed="true"] { background: var(--iron); color: var(--white); }
+
+  .hero { padding: 40px 0 96px; display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+  h1 { font: clamp(40px, 6.2vw, 78px)/1.02 var(--display); margin: 0 0 24px; letter-spacing: -.01em; }
+  h1 em { font-style: normal; color: var(--ember); }
+  .lead { font-size: clamp(18px, 2vw, 21px); color: var(--iron-2); max-width: 40ch; margin: 0 0 32px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 700 16px var(--body);
+         padding: 16px 24px; border-radius: 14px; border: 2px solid var(--iron); }
+  .btn svg { width: 20px; height: 20px; }
+  .btn.hot { background: var(--iron); color: var(--white); }
+  .btn.hot:hover { background: var(--ember); border-color: var(--ember); }
+  .btn.plain:hover { background: var(--white); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .fan { position: relative; height: 540px; }
+  .fan img { position: absolute; width: 230px; height: auto; border-radius: 30px; border: 8px solid var(--iron);
+             box-shadow: 0 30px 60px rgba(22,24,29,.22); background: var(--iron); }
+  .fan img:nth-child(1) { left: 2%; top: 70px; transform: rotate(-8deg); }
+  .fan img:nth-child(2) { left: 32%; top: 0; z-index: 2; animation: lift 1s cubic-bezier(.2,.8,.2,1) .2s both; }
+  .fan img:nth-child(3) { left: 60%; top: 80px; transform: rotate(8deg); }
+  @keyframes lift { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  section.block { padding: 88px 0; }
+  h2 { font: clamp(30px, 4vw, 46px)/1.1 var(--display); margin: 0 0 12px; }
+  .sub { color: var(--muted); margin: 0 0 40px; max-width: 54ch; }
+
+  .work { background: var(--iron); color: var(--white); }
+  .work .sub { color: #a9b0bc; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--iron-2); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; }
+  .card .shot { aspect-ratio: 16 / 10; overflow: hidden; }
+  .card .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .6s ease; }
+  .card:hover .shot img { transform: scale(1.04); }
+  .card .text { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .card b { font: 21px var(--display); font-weight: 400; }
+  .card span { color: #a9b0bc; font-size: 15px; }
+  .card .go { margin-top: auto; padding-top: 14px; color: var(--ember); font-weight: 700; }
+  .note { color: #8d95a3; font-size: 14px; margin: 22px 0 0; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+  .step { background: var(--white); border-radius: 22px; padding: 28px; }
+  .step::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 46px; height: 46px;
+                  border-radius: 50%; background: var(--ember); color: var(--white); font: 20px var(--display); margin-bottom: 18px; }
+  .step h3 { margin: 0 0 8px; font-size: 21px; }
+  .step p { margin: 0; color: var(--muted); }
+
+  .price { display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center; background: var(--white);
+           border-radius: 28px; padding: clamp(28px, 5vw, 56px); }
+  .amount { font: clamp(44px, 7vw, 76px)/1 var(--display); }
+  .amount small { display: block; font: 600 16px var(--body); color: var(--muted); margin-top: 10px; }
+  .incl { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .incl li { display: flex; gap: 12px; align-items: baseline; }
+  .incl li::before { content: ""; flex: none; width: 10px; height: 10px; background: var(--ember); transform: rotate(45deg) translateY(-1px); }
+
+  .contact { text-align: center; }
+  .contact h2 { max-width: 18ch; margin-inline: auto; }
+  .contact .actions { justify-content: center; }
+  footer { padding: 30px 0 40px; color: var(--muted); font-size: 15px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .hero, .price { grid-template-columns: 1fr; }
+    .fan { height: 380px; max-width: 420px; width: 100%; margin: 0 auto; }
+    .fan img { width: 42%; border-width: 6px; border-radius: 22px; }
+    .fan img:nth-child(1) { left: 1%; top: 50px; }
+    .fan img:nth-child(2) { left: 29%; }
+    .fan img:nth-child(3) { left: 56%; top: 56px; }
+    .cards, .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>SiteSmith Studio</a>
+    <div class="langs" role="group" aria-label="Til / Язык">
+      <button type="button" data-lang="uz">UZ</button><button type="button" data-lang="ru">RU</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div>
+      <h1 data-h="h1"></h1>
+      <p class="lead" data-t="lead"></p>
+      <div class="actions">
+        <a class="btn hot" href="https://t.me/imayub" target="_blank" rel="noopener"><span data-t="cta"></span></a>
+        <a class="btn plain" href="#work" data-t="see"></a>
+      </div>
+    </div>
+    <div class="fan" aria-hidden="true">
+      <img src="img/cafe-phone.jpg" alt="" width="780" height="1560">
+      <img src="img/barber-phone.jpg" alt="" width="780" height="1560">
+      <img src="img/school-phone.jpg" alt="" width="780" height="1560">
+    </div>
+  </section>
+
+  <section class="block work" id="work" aria-labelledby="h-work">
+    <div class="wrap">
+      <h2 id="h-work" data-t="work"></h2>
+      <p class="sub" data-t="work_sub"></p>
+      <div class="cards">
+        <a class="card" href="demo/barber/"><div class="shot"><img src="img/barber-desktop.jpg" alt="" loading="lazy"></div>
+          <div class="text"><b>Aziz Barber</b><span data-t="barber"></span><span class="go" data-t="open"></span></div></a>
+        <a class="card" href="demo/cafe/"><div class="shot"><img src="img/cafe-desktop.jpg" alt="" loading="lazy"></div>
+          <div class="text"><b>Lola Kafe</b><span data-t="cafe"></span><span class="go" data-t="open"></span></div></a>
+        <a class="card" href="demo/school/"><div class="shot"><img src="img/school-desktop.jpg" alt="" loading="lazy"></div>
+          <div class="text"><b>Bilim Markazi</b><span data-t="school"></span><span class="go" data-t="open"></span></div></a>
+      </div>
+      <p class="note" data-t="note"></p>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="h-how">
+    <div class="wrap">
+      <h2 id="h-how" data-t="how"></h2>
+      <p class="sub" data-t="how_sub"></p>
+      <div class="steps">
+        <div class="step"><h3 data-t="s1"></h3><p data-t="s1p"></p></div>
+        <div class="step"><h3 data-t="s2"></h3><p data-t="s2p"></p></div>
+        <div class="step"><h3 data-t="s3"></h3><p data-t="s3p"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="h-price">
+    <div class="price">
+      <div>
+        <h2 id="h-price" data-t="price"></h2>
+        <div class="amount"><span data-t="from"></span><small data-t="from_sub"></small></div>
+      </div>
+      <ul class="incl" id="incl"></ul>
+    </div>
+  </section>
+
+  <section class="block contact" aria-labelledby="h-contact">
+    <div class="wrap">
+      <h2 id="h-contact" data-t="contact"></h2>
+      <p class="sub" style="margin-inline:auto" data-t="contact_sub"></p>
+      <div class="actions">
+        <a class="btn hot" href="https://t.me/imayub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5l18.5-7.1c.9-.3 1.6.2 1.4 1.2z"/></svg>Telegram: @imayub</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>© <span id="year"></span> SiteSmith Studio</footer>
+
+<script>
+(() => {
+  const T = {
+    uz: {
+      h1: "Biznesingiz uchun sayt. <em>Avval koʻring</em>, keyin toʻlang.",
+      lead: "Kafe, sartaroshxona, oʻquv markazi va doʻkonlar uchun zamonaviy saytlar. Oʻzbek va rus tilida, telefonda chiroyli, bir bosishda qoʻngʻiroq.",
+      cta: "Bepul namuna soʻrash", see: "Ishlarni koʻrish",
+      work: "Namunalar", work_sub: "Har biri telefon uchun yasalgan. Ochib, UZ / RU tugmasini bosib koʻring.",
+      barber: "Sartaroshxona: narxlar, ustalar, xarita", cafe: "Kafe: menyu, ish vaqti, buyurtma", school: "Oʻquv markazi: kurslar, ustozlar, yozilish",
+      open: "Saytni ochish", note: "Namunalardagi biznes nomlari va maʼlumotlar oʻylab topilgan.",
+      how: "Qanday ishlaydi", how_sub: "Hech qanday xavf yoʻq: sayt yoqmasa, hech narsa toʻlamaysiz.",
+      s1: "Maʼlumot yuborasiz", s1p: "Biznes nomi, xizmatlar va narxlar, manzil, telefon. Instagram sahifangiz ham yetarli.",
+      s2: "Bepul namuna olasiz", s2p: "2–3 kunda saytingizning namunasini havola qilib yuboraman. Telefonda ochib koʻrasiz.",
+      s3: "Yoqsa, toʻlaysiz", s3p: "Oʻzgartirishlar kiritaman va saytni oʻz domeningizda ishga tushiraman.",
+      price: "Narx", from: "500 000 soʻmdan", from_sub: "Bir sahifali sayt, ikki tilda",
+      incl: ["Oʻzbek va rus tilida", "Telefon va kompyuterda chiroyli", "Qoʻngʻiroq va Telegram tugmalari", "Xarita va ish vaqti", "Google'da topilishi uchun sozlash", "Narxlarni yangilab turish (oylik)"],
+      contact: "Saytingizning bepul namunasini oling", contact_sub: "Telegram'da yozing: biznesingiz nomi va Instagram sahifangiz havolasi kifoya."
+    },
+    ru: {
+      h1: "Сайт для вашего бизнеса. <em>Сначала посмотрите</em>, потом платите.",
+      lead: "Современные сайты для кафе, барбершопов, учебных центров и магазинов. На узбекском и русском, красиво на телефоне, звонок в одно касание.",
+      cta: "Получить бесплатный пример", see: "Смотреть работы",
+      work: "Примеры", work_sub: "Каждый сделан для телефона. Откройте и нажмите UZ / RU.",
+      barber: "Барбершоп: цены, мастера, карта", cafe: "Кафе: меню, часы работы, заказ", school: "Учебный центр: курсы, преподаватели, запись",
+      open: "Открыть сайт", note: "Названия и данные в примерах вымышлены.",
+      how: "Как это работает", how_sub: "Никакого риска: если сайт не понравится, вы ничего не платите.",
+      s1: "Присылаете данные", s1p: "Название, услуги и цены, адрес, телефон. Можно просто ссылку на Instagram.",
+      s2: "Получаете бесплатный пример", s2p: "За 2–3 дня присылаю ссылку на пример вашего сайта. Открываете на телефоне.",
+      s3: "Понравилось — платите", s3p: "Вношу правки и запускаю сайт на вашем домене.",
+      price: "Цена", from: "от 500 000 сум", from_sub: "Одностраничный сайт на двух языках",
+      incl: ["На узбекском и русском", "Красиво на телефоне и компьютере", "Кнопки звонка и Telegram", "Карта и часы работы", "Настройка для поиска в Google", "Обновление цен (ежемесячно)"],
+      contact: "Получите бесплатный пример своего сайта", contact_sub: "Напишите в Telegram: название бизнеса и ссылка на вашу страницу в Instagram."
+    }
+  };
+  function render(lang) {
+    const L = T[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-t]").forEach((e) => e.textContent = L[e.dataset.t]);
+    document.querySelectorAll("[data-h]").forEach((e) => e.innerHTML = L[e.dataset.h]);
+    document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    document.getElementById("incl").replaceChildren(...L.incl.map((t) => { const li = document.createElement("li"); li.textContent = t; return li; }));
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+  document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => render(b.dataset.lang)));
+  document.getElementById("year").textContent = new Date().getFullYear();
+  let lang = "uz"; try { lang = localStorage.getItem("lang") || "uz"; } catch (e) {}
+  render(T[lang] ? lang : "uz");
+})();
+</script>
+</body>
+</html>
