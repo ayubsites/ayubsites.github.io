@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oak & Iron Barbers | Sample website</title>
+<meta name="description" content="Sample website by SiteSmith Studio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #16302a;      /* bottle-green leather of an old barber chair */
+    --green-2: #1e3d35;
+    --brass: #c08a2e;      /* chair fittings, scissors */
+    --brass-soft: #e2c48a;
+    --chalk: #eef0eb;
+    --ink: #131b18;
+    --muted: #5a6762;
+    --line: #cfd6d0;
+    --closed: #8a3a33;
+    --display: "Unbounded", "Arial Black", system-ui, sans-serif;
+    --body: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--chalk); color: var(--ink); font: 17px/1.6 var(--body); }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+
+  /* top bar */
+  .bar { position: absolute; inset: 0 0 auto 0; z-index: 2; }
+  .bar .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
+  .mark { font: 700 15px/1 var(--display); color: var(--chalk); text-decoration: none; letter-spacing: .02em; }
+  .langs { display: flex; gap: 4px; background: rgba(255,255,255,.08); padding: 4px; border-radius: 999px; }
+  .langs button { border: 0; background: none; color: var(--chalk); font: 600 13px var(--body); padding: 6px 12px;
+                  border-radius: 999px; cursor: pointer; }
+  .langs button[aria-pressed="true"] { background: var(--chalk); color: var(--green); }
+
+  /* hero */
+  .hero { background: var(--green); color: var(--chalk); padding: 120px 0 72px; position: relative; overflow: hidden; }
+  .hero::after { /* the barber-pole stripe, quietly, down the right edge */
+    content: ""; position: absolute; top: 0; right: 0; width: 18px; height: 100%;
+    background: repeating-linear-gradient(-45deg, var(--brass) 0 14px, transparent 14px 28px); opacity: .55; }
+  .status { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px;
+            padding: 8px 14px 8px 12px; border-radius: 999px; background: rgba(255,255,255,.08); }
+  .status i { width: 10px; height: 10px; border-radius: 50%; background: #6fcf8e; box-shadow: 0 0 0 4px rgba(111,207,142,.2); }
+  .status.closed i { background: #e0877d; box-shadow: 0 0 0 4px rgba(224,135,125,.2); }
+  .hero h1 { font: 800 clamp(44px, 9vw, 112px)/.95 var(--display); margin: 28px 0 22px; letter-spacing: -.02em;
+             max-width: 12ch; overflow-wrap: anywhere; }
+  .hero p.tag { font-size: clamp(18px, 2.2vw, 22px); max-width: 34ch; margin: 0 0 36px; color: #d6ddd8; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 16px var(--body);
+         padding: 15px 22px; border-radius: 12px; border: 2px solid transparent; }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.main { background: var(--brass); color: var(--ink); }
+  .btn.main:hover { background: var(--brass-soft); }
+  .btn.ghost { border-color: rgba(238,240,235,.35); color: var(--chalk); }
+  .btn.ghost:hover { border-color: var(--chalk); }
+
+  /* the price board: the one bold thing on the page */
+  .board-sec { padding: 88px 0 72px; }
+  h2 { font: 700 clamp(26px, 3.4vw, 38px)/1.15 var(--display); margin: 0 0 32px; letter-spacing: -.01em; }
+  .board { background: var(--green-2); color: var(--chalk); border-radius: 22px; padding: clamp(24px, 4vw, 48px);
+           border: 1px solid #2b4c43; }
+  .row { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 14px; padding: 16px 0;
+         border-bottom: 1px solid rgba(238,240,235,.1); }
+  .row:last-child { border-bottom: 0; }
+  .row .name { font-size: clamp(18px, 2.2vw, 22px); font-weight: 500; }
+  .row .name small { display: block; font-size: 14px; color: #a9b6b0; font-weight: 400; }
+  .row .dots { border-bottom: 2px dotted rgba(192,138,46,.55); transform: translateY(-6px); }
+  .row .price { font: 700 clamp(20px, 2.6vw, 28px) var(--display); color: var(--brass-soft); white-space: nowrap; }
+  .row .price span { font: 500 14px var(--body); color: #a9b6b0; margin-left: 6px; }
+
+  /* about + masters */
+  .about { padding: 24px 0 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: start; }
+  .about p { margin: 0 0 16px; max-width: 60ch; color: #2c3632; }
+  .masters { display: grid; gap: 12px; }
+  .master { display: flex; align-items: center; gap: 16px; padding: 16px; background: #fff; border: 1px solid var(--line);
+            border-radius: 14px; }
+  .initial { width: 52px; height: 52px; flex: none; border-radius: 50%; display: grid; place-items: center;
+             background: var(--green); color: var(--brass-soft); font: 700 20px var(--display); }
+  .master b { display: block; font-weight: 600; }
+  .master span { color: var(--muted); font-size: 15px; }
+
+  /* reviews: shown only when the business gave real ones */
+  .reviews { padding: 0 0 72px; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  blockquote { margin: 0; padding: 22px; background: #fff; border-left: 4px solid var(--brass); border-radius: 4px 14px 14px 4px; }
+  blockquote p { margin: 0 0 10px; }
+  blockquote cite { font-style: normal; color: var(--muted); font-size: 15px; }
+
+  /* location */
+  .where { background: #fff; border-top: 1px solid var(--line); padding: 72px 0; }
+  .where-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: stretch; }
+  dl { margin: 0 0 28px; display: grid; gap: 18px; }
+  dt { font-size: 14px; color: var(--muted); }
+  dd { margin: 2px 0 0; font-size: 18px; font-weight: 500; }
+  .hours div { display: flex; justify-content: space-between; max-width: 300px; font-weight: 400; font-size: 16px; }
+  .hours .today { font-weight: 600; }
+  .map { border: 0; width: 100%; min-height: 340px; border-radius: 16px; background: var(--line); }
+  .btn.dark { background: var(--green); color: var(--chalk); }
+  .btn.dark:hover { background: var(--green-2); }
+
+  footer { padding: 32px 0 110px; color: var(--muted); font-size: 15px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  footer a { color: var(--ink); }
+
+  /* phone: call / Telegram always under the thumb */
+  .dock { position: fixed; inset: auto 12px 12px 12px; z-index: 5; display: none; gap: 8px; }
+  .dock .btn { flex: 1; justify-content: center; padding: 14px; box-shadow: 0 8px 24px rgba(19,27,24,.25); }
+
+  @media (max-width: 860px) {
+    .about, .where-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero { padding-top: 104px; }
+    .dock { display: flex; }
+    .hero .actions { display: none; }
+  }
+  @media (min-width: 861px) { footer { padding-bottom: 40px; } }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top" data-k="name"></a>
+    <div class="langs" role="group" aria-label="Til / Язык">
+      <button type="button" data-lang="uz">UZ</button>
+      <button type="button" data-lang="ru">RU</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="status" id="status" role="status"><i></i><span></span></div>
+      <h1 data-k="name"></h1>
+      <p class="tag" data-t="tagline"></p>
+      <div class="actions">
+        <a class="btn main" data-href="tel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-ui="call"></span></a>
+        <a class="btn ghost" data-href="telegram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5l18.5-7.1c.9-.3 1.6.2 1.4 1.2z"/></svg><span data-ui="book"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="board-sec" aria-labelledby="h-services">
+    <div class="wrap">
+      <h2 id="h-services" data-ui="services"></h2>
+      <div class="board" id="board"></div>
+    </div>
+  </section>
+
+  <section class="wrap about" aria-labelledby="h-about">
+    <div>
+      <h2 id="h-about" data-ui="about"></h2>
+      <div id="about"></div>
+    </div>
+    <div id="masters-box">
+      <h2 data-ui="masters"></h2>
+      <div class="masters" id="masters"></div>
+    </div>
+  </section>
+
+  <section class="wrap reviews" id="reviews-box" aria-labelledby="h-reviews" hidden>
+    <h2 id="h-reviews" data-ui="reviews"></h2>
+    <div class="quotes" id="reviews"></div>
+  </section>
+
+  <section class="where" aria-labelledby="h-where">
+    <div class="wrap where-grid">
+      <div>
+        <h2 id="h-where" data-ui="where"></h2>
+        <dl>
+          <div><dt data-ui="address"></dt><dd data-t="address"></dd></div>
+          <div id="landmark-box"><dt data-ui="landmark"></dt><dd data-t="landmark"></dd></div>
+          <div><dt data-ui="hours"></dt><dd class="hours" id="hours"></dd></div>
+          <div><dt data-ui="phone"></dt><dd><a data-href="tel" data-k="phone"></a></dd></div>
+        </dl>
+        <a class="btn dark" id="route" target="_blank" rel="noopener"><span data-ui="route"></span></a>
+      </div>
+      <iframe class="map" id="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> <span data-k="name"></span></span>
+    <span id="social"></span>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn main" data-href="tel"><span data-ui="call_short"></span></a>
+  <a class="btn dark" data-href="telegram" target="_blank" rel="noopener">Telegram</a>
+</div>
+
+<!-- Jarvis fills this block; everything above stays as designed. -->
+<script type="application/json" id="site-data">
+{
+  "langs": [
+    "en"
+  ],
+  "lang": "en",
+  "currency": "USD",
+  "telegram": "",
+  "instagram": "",
+  "landmark": {
+    "en": ""
+  },
+  "reviews": [],
+  "name": "Oak & Iron Barbers",
+  "tz": "America/Chicago",
+  "tagline": {
+    "en": "Classic cuts and sharp fades in the heart of downtown. Walk in or call ahead."
+  },
+  "about": {
+    "en": "Three chairs, no rush. Every cut finishes with a hot towel and a straight-razor neckline.\nTools are cleaned between every client."
+  },
+  "phone": "(512) 555-0142",
+  "address": {
+    "en": "214 Cedar Street, Austin, TX"
+  },
+  "map": "Downtown Austin, TX",
+  "open": "09:00",
+  "close": "19:00",
+  "days_off": [
+    0
+  ],
+  "services": [
+    {
+      "name": {
+        "en": "Classic haircut"
+      },
+      "price": 30,
+      "minutes": 40
+    },
+    {
+      "name": {
+        "en": "Skin fade"
+      },
+      "price": 35,
+      "minutes": 45
+    },
+    {
+      "name": {
+        "en": "Beard trim & shape"
+      },
+      "price": 20,
+      "minutes": 20
+    },
+    {
+      "name": {
+        "en": "Haircut + beard"
+      },
+      "price": 48,
+      "minutes": 60
+    },
+    {
+      "name": {
+        "en": "Kids cut (under 12)"
+      },
+      "price": 22,
+      "minutes": 30
+    }
+  ],
+  "masters": [
+    {
+      "name": "Marcus",
+      "years": 9
+    },
+    {
+      "name": "Leo",
+      "years": 4
+    }
+  ]
+}
+</script>
+
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById("site-data").textContent);
+  const UI = {
+    uz: { call: "Qoʻngʻiroq qilish", call_short: "Qoʻngʻiroq", book: "Telegram orqali yozilish",
+          services: "Xizmatlar va narxlar", about: "Biz haqimizda", masters: "Ustalar", reviews: "Mijozlar fikri",
+          where: "Bizni qanday topasiz", address: "Manzil", landmark: "Moʻljal", hours: "Ish vaqti", phone: "Telefon",
+          route: "Yoʻnalish olish", minutes: "daq", currency: "soʻm",
+          open_now: (c) => `Hozir ochiq, ${c} gacha`, closed_now: (o) => `Hozir yopiq. ${o} da ochiladi`,
+          day_off: "Bugun dam olish kuni", off: "dam olish",
+          years: (n) => `${n} yillik tajriba`,
+          days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"] },
+    en: { call: "Call us", call_short: "Call", book: "Book on Telegram",
+          services: "Services & prices", about: "About us", masters: "Barbers", reviews: "What clients say",
+          where: "Find us", address: "Address", landmark: "Landmark", hours: "Opening hours", phone: "Phone",
+          route: "Get directions", minutes: "min", currency: "",
+          open_now: (c) => `Open now until ${c}`, closed_now: (o) => `Closed now. Opens at ${o}`,
+          day_off: "Closed today", off: "closed",
+          years: (n) => `${n} ${n === 1 ? "year" : "years"} of experience`,
+          days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] },
+    ru: { call: "Позвонить", call_short: "Позвонить", book: "Записаться в Telegram",
+          services: "Услуги и цены", about: "О нас", masters: "Мастера", reviews: "Отзывы клиентов",
+          where: "Как нас найти", address: "Адрес", landmark: "Ориентир", hours: "Режим работы", phone: "Телефон",
+          route: "Построить маршрут", minutes: "мин", currency: "сум",
+          open_now: (c) => `Сейчас открыто, до ${c}`, closed_now: (o) => `Сейчас закрыто. Откроемся в ${o}`,
+          day_off: "Сегодня выходной", off: "выходной",
+          years: (n) => `Опыт ${n} ${n % 10 === 1 && n % 100 !== 11 ? "год" : [2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100) ? "года" : "лет"}`,
+          days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"] }
+  };
+  const tr = (v, lang) => (v && typeof v === "object") ? (v[lang] || v.uz || v.ru || v.en || "") : (v || "");
+  const USD = D.currency === "USD";
+  const money = (n) => USD ? "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 }) : Number(n).toLocaleString("ru-RU").replace(/\u00a0/g, " ");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  function tashkentNow() {
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: D.tz || "Asia/Tashkent", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false })
+      .formatToParts(new Date());
+    const get = (t) => parts.find((p) => p.type === t).value;
+    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
+    return { day, minutes: (+get("hour") % 24) * 60 + +get("minute") };
+  }
+  const clock = (t, lang) => {
+    if (lang !== "en") return t;
+    const [h, m] = String(t).split(":").map(Number);
+    return `${(h % 12) || 12}${m ? ":" + String(m).padStart(2, "0") : ""} ${h < 12 || h === 24 ? "AM" : "PM"}`;
+  };
+  const toMin = (s) => { const [h, m] = String(s).split(":").map(Number); return h * 60 + (m || 0); };
+
+  function render(lang) {
+    const L = UI[lang];
+    document.documentElement.lang = lang;
+    document.title = `${D.name} | ${L.services}`;
+    document.querySelectorAll("[data-k]").forEach((e) => { e.textContent = D[e.dataset.k] || ""; });
+    document.querySelectorAll("[data-t]").forEach((e) => { e.textContent = tr(D[e.dataset.t], lang); });
+    document.querySelectorAll("[data-ui]").forEach((e) => { e.textContent = L[e.dataset.ui]; });
+    document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+
+    const tel = "tel:" + String(D.phone || "").replace(/[^\d+]/g, "");
+    const tg = D.telegram ? "https://t.me/" + D.telegram.replace(/^@/, "") : tel;
+    document.querySelectorAll('[data-href="tel"]').forEach((a) => a.href = tel);
+    document.querySelectorAll('[data-href="telegram"]').forEach((a) => { a.href = tg; a.hidden = !D.telegram; });
+
+    const board = document.getElementById("board");
+    board.replaceChildren(...(D.services || []).map((s) => {
+      const row = el("div", "row");
+      const name = el("div", "name", tr(s.name, lang));
+      if (s.minutes) name.append(el("small", null, `${s.minutes} ${L.minutes}`));
+      const price = el("div", "price", money(s.price));
+      price.append(el("span", null, L.currency));
+      row.append(name, el("div", "dots"), price);
+      return row;
+    }));
+
+    document.getElementById("about").replaceChildren(
+      ...tr(D.about, lang).split(/\n+/).filter(Boolean).map((p) => el("p", null, p)));
+    const masters = D.masters || [];
+    document.getElementById("masters-box").hidden = !masters.length;
+    document.getElementById("masters").replaceChildren(...masters.map((m) => {
+      const box = el("div", "master");
+      const who = el("div");
+      who.append(el("b", null, m.name));
+      if (m.years) who.append(el("span", null, L.years(m.years)));
+      box.append(el("div", "initial", (m.name || "?").trim()[0].toUpperCase()), who);
+      return box;
+    }));
+
+    const reviews = (D.reviews || []).filter((r) => tr(r.text, lang));
+    document.getElementById("reviews-box").hidden = !reviews.length;
+    document.getElementById("reviews").replaceChildren(...reviews.map((r) => {
+      const q = el("blockquote");
+      q.append(el("p", null, tr(r.text, lang)), el("cite", null, r.name || ""));
+      return q;
+    }));
+
+    document.getElementById("landmark-box").hidden = !tr(D.landmark, lang);
+    const now = tashkentNow();
+    const off = new Set(D.days_off || []);
+    document.getElementById("hours").replaceChildren(...[1, 2, 3, 4, 5, 6, 0].map((d) => {
+      const line = el("div", d === now.day ? "today" : null);
+      line.append(el("span", null, L.days[d]), el("span", null, off.has(d) ? L.off : `${clock(D.open, lang)}–${clock(D.close, lang)}`));
+      return line;
+    }));
+
+    const status = document.getElementById("status");
+    const isOpen = !off.has(now.day) && now.minutes >= toMin(D.open) && now.minutes < toMin(D.close);
+    status.classList.toggle("closed", !isOpen);
+    status.querySelector("span").textContent =
+      isOpen ? L.open_now(clock(D.close, lang)) : off.has(now.day) ? L.day_off : L.closed_now(clock(D.open, lang));
+
+    const q = encodeURIComponent(D.map || tr(D.address, "ru"));
+    const map = document.getElementById("map");
+    const src = `https://maps.google.com/maps?q=${q}&z=16&output=embed`;
+    if (map.src !== src) map.src = src;
+    document.getElementById("route").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+
+    const social = document.getElementById("social");
+    social.replaceChildren();
+    if (D.instagram) {
+      const a = el("a", null, "Instagram: @" + D.instagram.replace(/^@/, ""));
+      a.href = "https://instagram.com/" + D.instagram.replace(/^@/, ""); a.target = "_blank"; a.rel = "noopener";
+      social.append(a);
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+
+  const LANGS = (D.langs || ["uz", "ru"]).filter((l) => UI[l]);
+  const switcher = document.querySelector(".langs");
+  switcher.replaceChildren(...LANGS.map((l) => {
+    const b = document.createElement("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); return b; }));
+  switcher.hidden = LANGS.length < 2;
+  let lang = D.lang || LANGS[0];
+  try { lang = localStorage.getItem("lang") || lang; } catch (e) {}
+  if (!LANGS.includes(lang)) lang = LANGS[0];
+  document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => render(b.dataset.lang)));
+  render(lang);
+})();
+</script>
+<a href="../../en/" style="position:fixed;left:50%;transform:translateX(-50%);top:8px;z-index:50;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.72);padding:7px 11px;border-radius:999px;text-decoration:none">← Sample site: SiteSmith Studio</a>
+</body>
+</html>

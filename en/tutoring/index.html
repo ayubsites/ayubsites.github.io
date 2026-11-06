@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bright Path Tutoring | Sample website</title>
+<meta name="description" content="Sample website by SiteSmith Studio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* an exercise book: squared paper, blue ink, the red margin line, a yellow sticker */
+    --paper: #fbfbf8;
+    --grid: #dfe6f2;
+    --ink: #1f2a5c;
+    --ink-soft: #46507a;
+    --margin: #e05a4f;
+    --sticker: #ffd64a;
+    --line: #d5dbe8;
+    --font: "Onest", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; color: var(--ink); font: 17px/1.6 var(--font); background-color: var(--paper);
+         background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+         background-size: 24px 24px; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--margin); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1100px, 100% - 40px); margin-inline: auto; }
+  .page { position: relative; }
+  .page::before { content: ""; position: absolute; top: 0; bottom: 0; left: max(16px, calc(50% - 590px)); width: 2px;
+                  background: var(--margin); opacity: .55; pointer-events: none; }
+
+  header.top .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; }
+  .mark { font-weight: 800; font-size: 18px; text-decoration: none; }
+  .langs { display: flex; gap: 2px; background: #fff; border: 2px solid var(--ink); padding: 3px; border-radius: 10px; }
+  .langs button { border: 0; background: none; font: 700 13px var(--font); padding: 5px 11px; border-radius: 6px; cursor: pointer; color: var(--ink); }
+  .langs button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+  .hero { padding: 48px 0 72px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; }
+  .status { display: inline-flex; align-items: center; gap: 9px; font-weight: 500; font-size: 15px; background: #fff;
+            border: 1px solid var(--line); padding: 6px 13px; border-radius: 8px; }
+  .status i { width: 9px; height: 9px; border-radius: 50%; background: #2f9e6a; }
+  .status.closed i { background: var(--margin); }
+  .hero h1 { font-weight: 800; font-size: clamp(42px, 7.5vw, 92px); line-height: 1; letter-spacing: -.03em; margin: 22px 0 18px;
+             overflow-wrap: anywhere; }
+  .hero .tag { font-size: clamp(18px, 2.2vw, 21px); color: var(--ink-soft); max-width: 36ch; margin: 0 0 30px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 700 16px var(--font);
+         padding: 14px 22px; border-radius: 10px; border: 2px solid var(--ink); }
+  .btn svg { width: 19px; height: 19px; flex: none; }
+  .btn.main { background: var(--ink); color: #fff; }
+  .btn.main:hover { background: #2c3a7a; }
+  .btn.plain { background: #fff; }
+  .btn.plain:hover { background: #f0f3fa; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  /* the sticker: the free trial lesson is the offer */
+  .sticker { justify-self: center; width: min(320px, 100%); aspect-ratio: 1; background: var(--sticker); border-radius: 50%;
+             display: grid; place-items: center; text-align: center; padding: 34px; transform: rotate(-6deg);
+             box-shadow: 0 2px 0 rgba(31,42,92,.12), 0 18px 40px rgba(31,42,92,.15); text-decoration: none; }
+  .sticker b { display: block; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.05; letter-spacing: -.02em; }
+  .sticker span { display: block; margin-top: 10px; font-weight: 500; font-size: 16px; }
+  .sticker:hover { transform: rotate(-3deg); }
+  @media (prefers-reduced-motion: no-preference) { .sticker { transition: transform .2s; } }
+
+  section h2 { font-weight: 800; font-size: clamp(28px, 3.6vw, 40px); letter-spacing: -.02em; line-height: 1.15; margin: 0 0 28px; }
+  .courses-sec { padding: 24px 0 72px; }
+  .courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .course { background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .course h3 { margin: 0; font-size: 21px; line-height: 1.25; }
+  .course .length { color: var(--ink-soft); font-size: 15px; }
+  .course .price { margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line); font-weight: 800; font-size: 26px; letter-spacing: -.01em; }
+  .course .price small { font-weight: 500; font-size: 14px; color: var(--ink-soft); margin-left: 4px; }
+
+  .about { padding: 0 0 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
+  .about p { margin: 0 0 14px; color: var(--ink-soft); max-width: 60ch; }
+  .teachers { display: grid; gap: 10px; }
+  .teacher { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .initial { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--sticker);
+             font-weight: 800; font-size: 20px; flex: none; }
+  .teacher b { display: block; }
+  .teacher span { color: var(--ink-soft); font-size: 15px; }
+
+  .reviews { padding: 0 0 72px; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  blockquote { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+  blockquote p { margin: 0 0 10px; }
+  blockquote cite { font-style: normal; color: var(--ink-soft); font-size: 15px; }
+
+  .where { background: var(--ink); color: #e9ecf7; padding: 72px 0; }
+  .where h2 { color: #fff; }
+  .where-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; }
+  dl { margin: 0 0 28px; display: grid; gap: 16px; }
+  dt { font-size: 13px; color: #a8b0d4; }
+  dd { margin: 2px 0 0; font-size: 18px; font-weight: 500; }
+  .hours div { display: flex; justify-content: space-between; max-width: 300px; font-size: 16px; font-weight: 400; }
+  .hours .today { font-weight: 700; color: #fff; }
+  .map { border: 0; width: 100%; min-height: 340px; border-radius: 14px; background: #33407a; }
+  .btn.sun { background: var(--sticker); border-color: var(--sticker); color: var(--ink); }
+
+  footer { padding: 28px 0 110px; color: var(--ink-soft); font-size: 15px; background: var(--paper); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .dock { position: fixed; inset: auto 12px 12px 12px; z-index: 5; display: none; gap: 8px; }
+  .dock .btn { flex: 1; justify-content: center; padding: 13px; box-shadow: 0 8px 24px rgba(31,42,92,.25); }
+
+  .hero:has(.sticker[hidden]) { grid-template-columns: 1fr; }
+  @media (max-width: 860px) {
+    .hero, .about, .where-grid { grid-template-columns: 1fr; gap: 32px; }
+    .sticker { width: 220px; padding: 24px; }
+    .hero .actions { display: none; }
+    .dock { display: flex; }
+  }
+  @media (min-width: 861px) { footer { padding-bottom: 36px; } }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="page">
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" data-k="name"></a>
+    <div class="langs" role="group" aria-label="Til / Язык">
+      <button type="button" data-lang="uz">UZ</button>
+      <button type="button" data-lang="ru">RU</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="wrap hero">
+    <div>
+      <div class="status" id="status" role="status"><i></i><span></span></div>
+      <h1 data-k="name"></h1>
+      <p class="tag" data-t="tagline"></p>
+      <div class="actions">
+        <a class="btn main" data-href="signup" target="_blank" rel="noopener"><span data-ui="trial"></span></a>
+        <a class="btn plain" data-href="tel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-ui="call"></span></a>
+      </div>
+    </div>
+    <a class="sticker" data-href="signup" target="_blank" rel="noopener"><div><b data-ui="sticker_big"></b><span data-ui="sticker_small"></span></div></a>
+  </section>
+
+  <section class="courses-sec" aria-labelledby="h-courses">
+    <div class="wrap">
+      <h2 id="h-courses" data-ui="courses"></h2>
+      <div class="courses" id="board"></div>
+    </div>
+  </section>
+
+  <section class="wrap about" aria-labelledby="h-about">
+    <div>
+      <h2 id="h-about" data-ui="about"></h2>
+      <div id="about"></div>
+    </div>
+    <div id="masters-box">
+      <h2 data-ui="teachers"></h2>
+      <div class="teachers" id="masters"></div>
+    </div>
+  </section>
+
+  <section class="wrap reviews" id="reviews-box" aria-labelledby="h-reviews" hidden>
+    <h2 id="h-reviews" data-ui="reviews"></h2>
+    <div class="quotes" id="reviews"></div>
+  </section>
+
+  <section class="where" aria-labelledby="h-where">
+    <div class="wrap where-grid">
+      <div>
+        <h2 id="h-where" data-ui="where"></h2>
+        <dl>
+          <div><dt data-ui="address"></dt><dd data-t="address"></dd></div>
+          <div id="landmark-box"><dt data-ui="landmark"></dt><dd data-t="landmark"></dd></div>
+          <div><dt data-ui="hours"></dt><dd class="hours" id="hours"></dd></div>
+          <div><dt data-ui="phone"></dt><dd><a data-href="tel" data-k="phone"></a></dd></div>
+        </dl>
+        <a class="btn sun" id="route" target="_blank" rel="noopener"><span data-ui="route"></span></a>
+      </div>
+      <iframe class="map" id="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> <span data-k="name"></span></span>
+    <span id="social"></span>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn main" data-href="signup" target="_blank" rel="noopener"><span data-ui="trial_short"></span></a>
+  <a class="btn plain" data-href="tel"><span data-ui="call"></span></a>
+</div>
+
+<!-- Jarvis fills this block; everything above stays as designed. -->
+<script type="application/json" id="site-data">
+{
+  "langs": [
+    "en"
+  ],
+  "lang": "en",
+  "currency": "USD",
+  "telegram": "",
+  "instagram": "",
+  "landmark": {
+    "en": ""
+  },
+  "reviews": [],
+  "name": "Bright Path Tutoring",
+  "tz": "America/New_York",
+  "tagline": {
+    "en": "Small-group tutoring in math, English and coding for students aged 10–18."
+  },
+  "about": {
+    "en": "No more than six students per group. Parents get a short progress report every month."
+  },
+  "phone": "(617) 555-0123",
+  "address": {
+    "en": "40 Elm Street, Cambridge, MA"
+  },
+  "map": "Cambridge, MA",
+  "open": "14:00",
+  "close": "20:00",
+  "days_off": [
+    0
+  ],
+  "free_trial": true,
+  "services": [
+    {
+      "name": {
+        "en": "Math (grades 5–12)"
+      },
+      "price": 180,
+      "minutes": 3
+    },
+    {
+      "name": {
+        "en": "English & essay writing"
+      },
+      "price": 160,
+      "minutes": 3
+    },
+    {
+      "name": {
+        "en": "Intro to coding (Python)"
+      },
+      "price": 200,
+      "minutes": 2
+    }
+  ],
+  "masters": [
+    {
+      "name": "Sarah",
+      "years": 8
+    },
+    {
+      "name": "Daniel",
+      "years": 5
+    }
+  ]
+}
+</script>
+
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById("site-data").textContent);
+  const plural = (n, one, few, many) => n % 10 === 1 && n % 100 !== 11 ? one : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? few : many;
+  const UI = {
+    uz: { call: "Qoʻngʻiroq qilish", trial: "Bepul sinov darsiga yozilish", trial_short: "Sinov darsi",
+          enrol: "Kursga yozilish", enrol_short: "Yozilish",
+          sticker_big: "Birinchi dars bepul", sticker_small: "Yozilish uchun bosing",
+          courses: "Kurslar va narxlar", per_month: "soʻm / oy", length: (n) => `Davomiyligi: ${n} oy`,
+          about: "Biz haqimizda", teachers: "Ustozlar", reviews: "Oʻquvchilar fikri",
+          where: "Bizni qanday topasiz", address: "Manzil", landmark: "Moʻljal", hours: "Ish vaqti", phone: "Telefon",
+          route: "Yoʻnalish olish", years: (n) => `${n} yillik tajriba`,
+          open_now: (c) => `Hozir ochiq, ${c} gacha`, closed_now: (o) => `Hozir yopiq. ${o} da ochiladi`,
+          day_off: "Bugun dam olish kuni", off: "dam olish",
+          days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"] },
+    en: { call: "Call us", trial: "Book a free trial lesson", trial_short: "Free trial",
+          enrol: "Enrol in a course", enrol_short: "Enrol",
+          sticker_big: "First lesson free", sticker_small: "Tap to book",
+          courses: "Courses & prices", per_month: "/ month", length: (n) => `Length: ${n} ${n === 1 ? "month" : "months"}`,
+          about: "About us", teachers: "Teachers", reviews: "What students say",
+          where: "Find us", address: "Address", landmark: "Landmark", hours: "Opening hours", phone: "Phone",
+          route: "Get directions", years: (n) => `${n} ${n === 1 ? "year" : "years"} of experience`,
+          open_now: (c) => `Open now until ${c}`, closed_now: (o) => `Closed now. Opens at ${o}`,
+          day_off: "Closed today", off: "closed",
+          days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] },
+    ru: { call: "Позвонить", trial: "Записаться на бесплатный урок", trial_short: "Пробный урок",
+          enrol: "Записаться на курс", enrol_short: "Записаться",
+          sticker_big: "Первый урок бесплатно", sticker_small: "Нажмите, чтобы записаться",
+          courses: "Курсы и цены", per_month: "сум / мес.", length: (n) => `Длительность: ${n} ${plural(n, "месяц", "месяца", "месяцев")}`,
+          about: "О нас", teachers: "Преподаватели", reviews: "Отзывы учеников",
+          where: "Как нас найти", address: "Адрес", landmark: "Ориентир", hours: "Режим работы", phone: "Телефон",
+          route: "Построить маршрут", years: (n) => `Опыт ${n} ${plural(n, "год", "года", "лет")}`,
+          open_now: (c) => `Сейчас открыто, до ${c}`, closed_now: (o) => `Сейчас закрыто. Откроемся в ${o}`,
+          day_off: "Сегодня выходной", off: "выходной",
+          days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"] }
+  };
+  const tr = (v, lang) => (v && typeof v === "object") ? (v[lang] || v.uz || v.ru || v.en || "") : (v || "");
+  const USD = D.currency === "USD";
+  const money = (n) => USD ? "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 }) : Number(n).toLocaleString("ru-RU").replace(/\u00a0/g, " ");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  function tashkentNow() {
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: D.tz || "Asia/Tashkent", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+    const get = (t) => parts.find((p) => p.type === t).value;
+    return { day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday")), minutes: (+get("hour") % 24) * 60 + +get("minute") };
+  }
+  const clock = (t, lang) => {
+    if (lang !== "en") return t;
+    const [h, m] = String(t).split(":").map(Number);
+    return `${(h % 12) || 12}${m ? ":" + String(m).padStart(2, "0") : ""} ${h < 12 || h === 24 ? "AM" : "PM"}`;
+  };
+  const toMin = (s) => { const [h, m] = String(s).split(":").map(Number); return h * 60 + (m || 0); };
+
+  function render(lang) {
+    const L = UI[lang];
+    document.documentElement.lang = lang;
+    document.title = `${D.name} | ${L.courses}`;
+    document.querySelectorAll("[data-k]").forEach((e) => { e.textContent = D[e.dataset.k] || ""; });
+    document.querySelectorAll("[data-t]").forEach((e) => { e.textContent = tr(D[e.dataset.t], lang); });
+    document.querySelectorAll("[data-ui]").forEach((e) => { e.textContent = typeof L[e.dataset.ui] === "string" ? L[e.dataset.ui] : ""; });
+    document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    const tel = "tel:" + String(D.phone || "").replace(/[^\d+]/g, "");
+    const trial = D.free_trial !== false;     // only when the centre really gives a free first lesson
+    document.querySelector(".sticker").hidden = !trial;
+    document.querySelectorAll('[data-ui="trial"]').forEach((e) => e.textContent = trial ? L.trial : L.enrol);
+    document.querySelectorAll('[data-ui="trial_short"]').forEach((e) => e.textContent = trial ? L.trial_short : L.enrol_short);
+    const signup = D.telegram ? "https://t.me/" + D.telegram.replace(/^@/, "") : tel;   // sign up by Telegram, or by phone
+    document.querySelectorAll('[data-href="tel"]').forEach((a) => a.href = tel);
+    document.querySelectorAll('[data-href="signup"]').forEach((a) => { a.href = signup; if (!D.telegram) a.removeAttribute("target"); });
+
+    document.getElementById("board").replaceChildren(...(D.services || []).map((s) => {
+      const card = el("article", "course");
+      card.append(el("h3", null, tr(s.name, lang)));
+      if (s.minutes) card.append(el("div", "length", L.length(s.minutes)));
+      const price = el("div", "price", money(s.price)); price.append(el("small", null, L.per_month));
+      card.append(price);
+      return card;
+    }));
+    document.getElementById("about").replaceChildren(...tr(D.about, lang).split(/\n+/).filter(Boolean).map((p) => el("p", null, p)));
+    const masters = D.masters || [];
+    document.getElementById("masters-box").hidden = !masters.length;
+    document.getElementById("masters").replaceChildren(...masters.map((m) => {
+      const box = el("div", "teacher"), who = el("div");
+      who.append(el("b", null, m.name)); if (m.years) who.append(el("span", null, L.years(m.years)));
+      box.append(el("div", "initial", (m.name || "?").trim()[0].toUpperCase()), who); return box;
+    }));
+    const reviews = (D.reviews || []).filter((r) => tr(r.text, lang));
+    document.getElementById("reviews-box").hidden = !reviews.length;
+    document.getElementById("reviews").replaceChildren(...reviews.map((r) => {
+      const q = el("blockquote"); q.append(el("p", null, tr(r.text, lang)), el("cite", null, r.name || "")); return q; }));
+
+    document.getElementById("landmark-box").hidden = !tr(D.landmark, lang);
+    const now = tashkentNow(), off = new Set(D.days_off || []);
+    document.getElementById("hours").replaceChildren(...[1, 2, 3, 4, 5, 6, 0].map((d) => {
+      const line = el("div", d === now.day ? "today" : null);
+      line.append(el("span", null, L.days[d]), el("span", null, off.has(d) ? L.off : `${clock(D.open, lang)}–${clock(D.close, lang)}`)); return line;
+    }));
+    const isOpen = !off.has(now.day) && now.minutes >= toMin(D.open) && now.minutes < toMin(D.close);
+    const status = document.getElementById("status");
+    status.classList.toggle("closed", !isOpen);
+    status.querySelector("span").textContent = isOpen ? L.open_now(clock(D.close, lang)) : off.has(now.day) ? L.day_off : L.closed_now(clock(D.open, lang));
+
+    const q = encodeURIComponent(D.map || tr(D.address, "ru"));
+    const map = document.getElementById("map"), src = `https://maps.google.com/maps?q=${q}&z=16&output=embed`;
+    if (map.src !== src) map.src = src;
+    document.getElementById("route").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    const social = document.getElementById("social"); social.replaceChildren();
+    if (D.instagram) {
+      const a = el("a", null, "Instagram: @" + D.instagram.replace(/^@/, ""));
+      a.href = "https://instagram.com/" + D.instagram.replace(/^@/, ""); a.target = "_blank"; a.rel = "noopener"; social.append(a);
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+  const LANGS = (D.langs || ["uz", "ru"]).filter((l) => UI[l]);
+  const switcher = document.querySelector(".langs");
+  switcher.replaceChildren(...LANGS.map((l) => {
+    const b = document.createElement("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); return b; }));
+  switcher.hidden = LANGS.length < 2;
+  let lang = D.lang || LANGS[0];
+  try { lang = localStorage.getItem("lang") || lang; } catch (e) {}
+  if (!LANGS.includes(lang)) lang = LANGS[0];
+  document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => render(b.dataset.lang)));
+  render(lang);
+})();
+</script>
+<a href="../../en/" style="position:fixed;left:50%;transform:translateX(-50%);top:8px;z-index:50;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.72);padding:7px 11px;border-radius:999px;text-decoration:none">← Sample site: SiteSmith Studio</a>
+</body>
+</html>

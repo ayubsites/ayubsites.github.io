@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Fern Coffee | Sample website</title>
+<meta name="description" content="Sample website by SiteSmith Studio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Rishtan ceramics: cobalt and turquoise glaze on white clay, a pomegranate for the prices */
+    --porcelain: #f6f7fa;
+    --cobalt: #1c3c8c;
+    --cobalt-deep: #142c68;
+    --turq: #1d958f;
+    --pomegranate: #b3303a;
+    --ink: #161b2e;
+    --muted: #5d647a;
+    --line: #d9dde8;
+    --display: "Prata", Georgia, serif;
+    --body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--porcelain); color: var(--ink); font: 17px/1.65 var(--body); }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--turq); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1080px, 100% - 40px); margin-inline: auto; }
+
+  /* the tile band: a glazed border like the rim of a plate */
+  .tiles { height: 34px; background-color: var(--cobalt);
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--porcelain) 0 5px, transparent 5.5px),
+      conic-gradient(from 45deg at 50% 50%, var(--turq) 0 25%, transparent 0 50%, var(--turq) 0 75%, transparent 0);
+    background-size: 34px 34px, 34px 34px; }
+
+  header.top .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 18px; }
+  .mark { font: 20px var(--display); text-decoration: none; color: var(--cobalt); }
+  .langs { display: flex; gap: 2px; border: 1px solid var(--line); padding: 3px; border-radius: 999px; background: #fff; }
+  .langs button { border: 0; background: none; font: 700 13px var(--body); padding: 6px 12px; border-radius: 999px;
+                  cursor: pointer; color: var(--muted); }
+  .langs button[aria-pressed="true"] { background: var(--cobalt); color: #fff; }
+
+  .hero { text-align: center; padding: 56px 0 72px; }
+  .status { display: inline-flex; align-items: center; gap: 9px; font: 500 15px var(--body); color: var(--muted);
+            padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+  .status i { width: 9px; height: 9px; border-radius: 50%; background: var(--turq); }
+  .status.closed i { background: var(--pomegranate); }
+  .hero h1 { font: clamp(48px, 10vw, 120px)/1 var(--display); color: var(--cobalt); margin: 26px auto 18px;
+             max-width: 14ch; overflow-wrap: anywhere; }
+  .hero .tag { font-size: clamp(18px, 2.2vw, 21px); color: var(--muted); max-width: 40ch; margin: 0 auto 34px; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 700 16px var(--body);
+         padding: 15px 24px; border-radius: 999px; border: 2px solid transparent; }
+  .btn svg { width: 19px; height: 19px; flex: none; }
+  .btn.main { background: var(--cobalt); color: #fff; }
+  .btn.main:hover { background: var(--cobalt-deep); }
+  .btn.line { border-color: var(--cobalt); color: var(--cobalt); background: #fff; }
+  .btn.line:hover { background: #eef1fa; }
+
+  /* the menu: printed like a card left on the table */
+  .menu-sec { background: #fff; border-block: 1px solid var(--line); padding: 72px 0 80px; }
+  h2 { font: clamp(30px, 4vw, 44px)/1.1 var(--display); color: var(--cobalt); margin: 0 0 8px; text-align: center; }
+  .sub { text-align: center; color: var(--muted); margin: 0 0 40px; }
+  .menu { columns: 2 340px; column-gap: 64px; }
+  .dish { break-inside: avoid; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 0;
+          border-bottom: 1px dashed var(--line); }
+  .dish .name { font-weight: 500; font-size: 18px; }
+  .dish .price { font: 21px var(--display); color: var(--pomegranate); white-space: nowrap; }
+  .dish .price small { font: 500 13px var(--body); color: var(--muted); margin-left: 4px; }
+
+  .about { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .about h2, .about .sub { text-align: left; }
+  .about p { margin: 0 0 14px; color: #2c3247; max-width: 58ch; }
+  .plate { aspect-ratio: 1; border-radius: 50%; max-width: 380px; width: 100%; justify-self: center;
+           background:
+             radial-gradient(circle, var(--porcelain) 0 46%, transparent 46.5%),
+             repeating-conic-gradient(var(--cobalt) 0 10deg, var(--turq) 10deg 20deg, var(--porcelain) 20deg 30deg);
+           box-shadow: inset 0 0 0 10px var(--cobalt), 0 24px 48px rgba(28,60,140,.18);
+           display: grid; place-items: center; }
+  .plate span { font: clamp(26px, 4vw, 36px)/1.1 var(--display); color: var(--cobalt); text-align: center; max-width: 7ch; }
+
+  .reviews { padding: 0 0 80px; }
+  .quotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 32px; }
+  blockquote { margin: 0; padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 18px; }
+  blockquote p { margin: 0 0 10px; font-size: 16px; }
+  blockquote cite { font-style: normal; color: var(--muted); font-size: 14px; }
+
+  .where { background: var(--cobalt-deep); color: #e8ecf8; padding: 72px 0; }
+  .where h2 { color: #fff; text-align: left; margin-bottom: 28px; }
+  .where-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; }
+  dl { margin: 0 0 28px; display: grid; gap: 16px; }
+  dt { font-size: 13px; color: #a9b5d8; }
+  dd { margin: 2px 0 0; font-size: 18px; font-weight: 500; }
+  .hours div { display: flex; justify-content: space-between; max-width: 300px; font-size: 16px; font-weight: 400; }
+  .hours .today { font-weight: 700; color: #fff; }
+  .map { border: 0; width: 100%; min-height: 340px; border-radius: 18px; background: #2a3f78; }
+  .btn.light { background: #fff; color: var(--cobalt); }
+
+  footer { padding: 28px 0 110px; color: var(--muted); font-size: 15px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .dock { position: fixed; inset: auto 12px 12px 12px; z-index: 5; display: none; gap: 8px; }
+  .dock .btn { flex: 1; justify-content: center; padding: 14px; box-shadow: 0 8px 24px rgba(22,27,46,.25); }
+
+  @media (max-width: 860px) {
+    .about, .where-grid { grid-template-columns: 1fr; gap: 32px; }
+    .plate { max-width: 240px; order: -1; }
+    .dock { display: flex; }
+    .hero .actions { display: none; }
+  }
+  @media (min-width: 861px) { footer { padding-bottom: 36px; } }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="tiles" aria-hidden="true"></div>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" data-k="name"></a>
+    <div class="langs" role="group" aria-label="Til / Язык">
+      <button type="button" data-lang="uz">UZ</button>
+      <button type="button" data-lang="ru">RU</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="status" id="status" role="status"><i></i><span></span></div>
+    <h1 data-k="name"></h1>
+    <p class="tag" data-t="tagline"></p>
+    <div class="actions">
+      <a class="btn main" href="#menu"><span data-ui="see_menu"></span></a>
+      <a class="btn line" data-href="tel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-ui="call"></span></a>
+      <a class="btn line" data-href="telegram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13.2 1.8 11.7c-1-.3-1-1 .2-1.5l18.5-7.1c.9-.3 1.6.2 1.4 1.2z"/></svg><span data-ui="order"></span></a>
+    </div>
+  </section>
+
+  <section class="menu-sec" id="menu" aria-labelledby="h-menu">
+    <div class="wrap">
+      <h2 id="h-menu" data-ui="menu"></h2>
+      <p class="sub" data-ui="menu_sub"></p>
+      <div class="menu" id="board"></div>
+    </div>
+  </section>
+
+  <section class="wrap about" aria-labelledby="h-about">
+    <div>
+      <h2 id="h-about" data-ui="about"></h2>
+      <div id="about"></div>
+    </div>
+    <div class="plate" aria-hidden="true"><span data-k="name"></span></div>
+  </section>
+
+  <section class="wrap reviews" id="reviews-box" aria-labelledby="h-reviews" hidden>
+    <h2 id="h-reviews" data-ui="reviews"></h2>
+    <div class="quotes" id="reviews"></div>
+  </section>
+
+  <section class="where" aria-labelledby="h-where">
+    <div class="wrap where-grid">
+      <div>
+        <h2 id="h-where" data-ui="where"></h2>
+        <dl>
+          <div><dt data-ui="address"></dt><dd data-t="address"></dd></div>
+          <div id="landmark-box"><dt data-ui="landmark"></dt><dd data-t="landmark"></dd></div>
+          <div><dt data-ui="hours"></dt><dd class="hours" id="hours"></dd></div>
+          <div><dt data-ui="phone"></dt><dd><a data-href="tel" data-k="phone"></a></dd></div>
+        </dl>
+        <a class="btn light" id="route" target="_blank" rel="noopener"><span data-ui="route"></span></a>
+      </div>
+      <iframe class="map" id="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+    </div>
+  </section>
+</main>
+<div class="tiles" aria-hidden="true"></div>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> <span data-k="name"></span></span>
+    <span id="social"></span>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn main" data-href="tel"><span data-ui="call"></span></a>
+  <a class="btn line" data-href="telegram" target="_blank" rel="noopener">Telegram</a>
+</div>
+
+<!-- Jarvis fills this block; everything above stays as designed. -->
+<script type="application/json" id="site-data">
+{
+  "langs": [
+    "en"
+  ],
+  "lang": "en",
+  "currency": "USD",
+  "telegram": "",
+  "instagram": "",
+  "landmark": {
+    "en": ""
+  },
+  "reviews": [],
+  "name": "Little Fern Coffee",
+  "tz": "America/Los_Angeles",
+  "tagline": {
+    "en": "Small-batch coffee, fresh pastries and a quiet corner to work."
+  },
+  "about": {
+    "en": "We roast in small batches every week and bake every morning. Free Wi-Fi, plenty of sockets, and oat milk at no extra charge."
+  },
+  "phone": "(503) 555-0187",
+  "address": {
+    "en": "88 Alder Street, Portland, OR"
+  },
+  "map": "Downtown Portland, OR",
+  "open": "07:00",
+  "close": "18:00",
+  "days_off": [],
+  "services": [
+    {
+      "name": {
+        "en": "Espresso"
+      },
+      "price": 3
+    },
+    {
+      "name": {
+        "en": "Flat white"
+      },
+      "price": 4.5
+    },
+    {
+      "name": {
+        "en": "Oat latte"
+      },
+      "price": 5.25
+    },
+    {
+      "name": {
+        "en": "Cold brew"
+      },
+      "price": 4.75
+    },
+    {
+      "name": {
+        "en": "Almond croissant"
+      },
+      "price": 4
+    },
+    {
+      "name": {
+        "en": "Avocado toast"
+      },
+      "price": 9.5
+    }
+  ],
+  "masters": []
+}
+</script>
+
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById("site-data").textContent);
+  const UI = {
+    uz: { call: "Qoʻngʻiroq qilish", order: "Telegram orqali buyurtma", see_menu: "Menyuni koʻrish",
+          menu: "Menyu", menu_sub: "Narxlar soʻmda", about: "Biz haqimizda", reviews: "Mehmonlar fikri",
+          where: "Bizni qanday topasiz", address: "Manzil", landmark: "Moʻljal", hours: "Ish vaqti", phone: "Telefon",
+          route: "Yoʻnalish olish", currency: "soʻm",
+          open_now: (c) => `Hozir ochiq, ${c} gacha`, closed_now: (o) => `Hozir yopiq. ${o} da ochiladi`,
+          day_off: "Bugun dam olish kuni", off: "dam olish",
+          days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"] },
+    en: { call: "Call us", order: "Order on Telegram", see_menu: "See the menu",
+          menu: "Menu", menu_sub: "Fresh every day", about: "About us", reviews: "What guests say",
+          where: "Find us", address: "Address", landmark: "Landmark", hours: "Opening hours", phone: "Phone",
+          route: "Get directions", currency: "",
+          open_now: (c) => `Open now until ${c}`, closed_now: (o) => `Closed now. Opens at ${o}`,
+          day_off: "Closed today", off: "closed",
+          days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] },
+    ru: { call: "Позвонить", order: "Заказать в Telegram", see_menu: "Смотреть меню",
+          menu: "Меню", menu_sub: "Цены в сумах", about: "О нас", reviews: "Отзывы гостей",
+          where: "Как нас найти", address: "Адрес", landmark: "Ориентир", hours: "Режим работы", phone: "Телефон",
+          route: "Построить маршрут", currency: "сум",
+          open_now: (c) => `Сейчас открыто, до ${c}`, closed_now: (o) => `Сейчас закрыто. Откроемся в ${o}`,
+          day_off: "Сегодня выходной", off: "выходной",
+          days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"] }
+  };
+  const tr = (v, lang) => (v && typeof v === "object") ? (v[lang] || v.uz || v.ru || v.en || "") : (v || "");
+  const USD = D.currency === "USD";
+  const money = (n) => USD ? "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 }) : Number(n).toLocaleString("ru-RU").replace(/\u00a0/g, " ");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  function tashkentNow() {
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: D.tz || "Asia/Tashkent", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+    const get = (t) => parts.find((p) => p.type === t).value;
+    return { day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday")), minutes: (+get("hour") % 24) * 60 + +get("minute") };
+  }
+  const clock = (t, lang) => {
+    if (lang !== "en") return t;
+    const [h, m] = String(t).split(":").map(Number);
+    return `${(h % 12) || 12}${m ? ":" + String(m).padStart(2, "0") : ""} ${h < 12 || h === 24 ? "AM" : "PM"}`;
+  };
+  const toMin = (s) => { const [h, m] = String(s).split(":").map(Number); return h * 60 + (m || 0); };
+  function openNow(now, off) {
+    if (off.has(now.day)) return false;
+    const o = toMin(D.open), c = toMin(D.close);
+    return c > o ? now.minutes >= o && now.minutes < c : now.minutes >= o || now.minutes < c;   // past midnight too
+  }
+
+  function render(lang) {
+    const L = UI[lang];
+    document.documentElement.lang = lang;
+    document.title = `${D.name} | ${L.menu}`;
+    document.querySelectorAll("[data-k]").forEach((e) => { e.textContent = D[e.dataset.k] || ""; });
+    document.querySelectorAll("[data-t]").forEach((e) => { e.textContent = tr(D[e.dataset.t], lang); });
+    document.querySelectorAll("[data-ui]").forEach((e) => { e.textContent = L[e.dataset.ui]; });
+    document.querySelectorAll(".langs button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    const tel = "tel:" + String(D.phone || "").replace(/[^\d+]/g, "");
+    document.querySelectorAll('[data-href="tel"]').forEach((a) => a.href = tel);
+    document.querySelectorAll('[data-href="telegram"]').forEach((a) => {
+      a.href = D.telegram ? "https://t.me/" + D.telegram.replace(/^@/, "") : tel; a.hidden = !D.telegram; });
+
+    document.getElementById("board").replaceChildren(...(D.services || []).map((s) => {
+      const row = el("div", "dish");
+      const price = el("div", "price", money(s.price));
+      price.append(el("small", null, L.currency));
+      row.append(el("div", "name", tr(s.name, lang)), price);
+      return row;
+    }));
+    document.getElementById("about").replaceChildren(...tr(D.about, lang).split(/\n+/).filter(Boolean).map((p) => el("p", null, p)));
+
+    const reviews = (D.reviews || []).filter((r) => tr(r.text, lang));
+    document.getElementById("reviews-box").hidden = !reviews.length;
+    document.getElementById("reviews").replaceChildren(...reviews.map((r) => {
+      const q = el("blockquote"); q.append(el("p", null, tr(r.text, lang)), el("cite", null, r.name || "")); return q; }));
+
+    document.getElementById("landmark-box").hidden = !tr(D.landmark, lang);
+    const now = tashkentNow(), off = new Set(D.days_off || []);
+    document.getElementById("hours").replaceChildren(...[1, 2, 3, 4, 5, 6, 0].map((d) => {
+      const line = el("div", d === now.day ? "today" : null);
+      line.append(el("span", null, L.days[d]), el("span", null, off.has(d) ? L.off : `${clock(D.open, lang)}–${clock(D.close, lang)}`));
+      return line;
+    }));
+    const isOpen = openNow(now, off), status = document.getElementById("status");
+    status.classList.toggle("closed", !isOpen);
+    status.querySelector("span").textContent = isOpen ? L.open_now(clock(D.close, lang)) : off.has(now.day) ? L.day_off : L.closed_now(clock(D.open, lang));
+
+    const q = encodeURIComponent(D.map || tr(D.address, "ru"));
+    const map = document.getElementById("map"), src = `https://maps.google.com/maps?q=${q}&z=16&output=embed`;
+    if (map.src !== src) map.src = src;
+    document.getElementById("route").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    const social = document.getElementById("social"); social.replaceChildren();
+    if (D.instagram) {
+      const a = el("a", null, "Instagram: @" + D.instagram.replace(/^@/, ""));
+      a.href = "https://instagram.com/" + D.instagram.replace(/^@/, ""); a.target = "_blank"; a.rel = "noopener"; social.append(a);
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+  }
+  const LANGS = (D.langs || ["uz", "ru"]).filter((l) => UI[l]);
+  const switcher = document.querySelector(".langs");
+  switcher.replaceChildren(...LANGS.map((l) => {
+    const b = document.createElement("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); return b; }));
+  switcher.hidden = LANGS.length < 2;
+  let lang = D.lang || LANGS[0];
+  try { lang = localStorage.getItem("lang") || lang; } catch (e) {}
+  if (!LANGS.includes(lang)) lang = LANGS[0];
+  document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => render(b.dataset.lang)));
+  render(lang);
+})();
+</script>
+<a href="../../en/" style="position:fixed;left:50%;transform:translateX(-50%);top:8px;z-index:50;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.72);padding:7px 11px;border-radius:999px;text-decoration:none">← Sample site: SiteSmith Studio</a>
+</body>
+</html>

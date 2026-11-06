@@ -240,6 +240,16 @@
           open_now: (c) => `Hozir ochiq, ${c} gacha`, closed_now: (o) => `Hozir yopiq. ${o} da ochiladi`,
           day_off: "Bugun dam olish kuni", off: "dam olish",
           days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"] },
+    en: { call: "Call us", trial: "Book a free trial lesson", trial_short: "Free trial",
+          enrol: "Enrol in a course", enrol_short: "Enrol",
+          sticker_big: "First lesson free", sticker_small: "Tap to book",
+          courses: "Courses & prices", per_month: "/ month", length: (n) => `Length: ${n} ${n === 1 ? "month" : "months"}`,
+          about: "About us", teachers: "Teachers", reviews: "What students say",
+          where: "Find us", address: "Address", landmark: "Landmark", hours: "Opening hours", phone: "Phone",
+          route: "Get directions", years: (n) => `${n} ${n === 1 ? "year" : "years"} of experience`,
+          open_now: (c) => `Open now until ${c}`, closed_now: (o) => `Closed now. Opens at ${o}`,
+          day_off: "Closed today", off: "closed",
+          days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] },
     ru: { call: "Позвонить", trial: "Записаться на бесплатный урок", trial_short: "Пробный урок",
           enrol: "Записаться на курс", enrol_short: "Записаться",
           sticker_big: "Первый урок бесплатно", sticker_small: "Нажмите, чтобы записаться",
@@ -251,14 +261,20 @@
           day_off: "Сегодня выходной", off: "выходной",
           days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"] }
   };
-  const tr = (v, lang) => (v && typeof v === "object") ? (v[lang] || v.uz || v.ru || "") : (v || "");
-  const money = (n) => Number(n).toLocaleString("ru-RU").replace(/ /g, " ");
+  const tr = (v, lang) => (v && typeof v === "object") ? (v[lang] || v.uz || v.ru || v.en || "") : (v || "");
+  const USD = D.currency === "USD";
+  const money = (n) => USD ? "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 }) : Number(n).toLocaleString("ru-RU").replace(/\u00a0/g, " ");
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   function tashkentNow() {
-    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tashkent", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+    const parts = new Intl.DateTimeFormat("en-GB", { timeZone: D.tz || "Asia/Tashkent", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
     const get = (t) => parts.find((p) => p.type === t).value;
     return { day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday")), minutes: (+get("hour") % 24) * 60 + +get("minute") };
   }
+  const clock = (t, lang) => {
+    if (lang !== "en") return t;
+    const [h, m] = String(t).split(":").map(Number);
+    return `${(h % 12) || 12}${m ? ":" + String(m).padStart(2, "0") : ""} ${h < 12 || h === 24 ? "AM" : "PM"}`;
+  };
   const toMin = (s) => { const [h, m] = String(s).split(":").map(Number); return h * 60 + (m || 0); };
 
   function render(lang) {
@@ -303,12 +319,12 @@
     const now = tashkentNow(), off = new Set(D.days_off || []);
     document.getElementById("hours").replaceChildren(...[1, 2, 3, 4, 5, 6, 0].map((d) => {
       const line = el("div", d === now.day ? "today" : null);
-      line.append(el("span", null, L.days[d]), el("span", null, off.has(d) ? L.off : `${D.open}–${D.close}`)); return line;
+      line.append(el("span", null, L.days[d]), el("span", null, off.has(d) ? L.off : `${clock(D.open, lang)}–${clock(D.close, lang)}`)); return line;
     }));
     const isOpen = !off.has(now.day) && now.minutes >= toMin(D.open) && now.minutes < toMin(D.close);
     const status = document.getElementById("status");
     status.classList.toggle("closed", !isOpen);
-    status.querySelector("span").textContent = isOpen ? L.open_now(D.close) : off.has(now.day) ? L.day_off : L.closed_now(D.open);
+    status.querySelector("span").textContent = isOpen ? L.open_now(clock(D.close, lang)) : off.has(now.day) ? L.day_off : L.closed_now(clock(D.open, lang));
 
     const q = encodeURIComponent(D.map || tr(D.address, "ru"));
     const map = document.getElementById("map"), src = `https://maps.google.com/maps?q=${q}&z=16&output=embed`;
@@ -322,13 +338,18 @@
     document.getElementById("year").textContent = new Date().getFullYear();
     try { localStorage.setItem("lang", lang); } catch (e) {}
   }
-  let lang = D.lang || "uz";
+  const LANGS = (D.langs || ["uz", "ru"]).filter((l) => UI[l]);
+  const switcher = document.querySelector(".langs");
+  switcher.replaceChildren(...LANGS.map((l) => {
+    const b = document.createElement("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); return b; }));
+  switcher.hidden = LANGS.length < 2;
+  let lang = D.lang || LANGS[0];
   try { lang = localStorage.getItem("lang") || lang; } catch (e) {}
-  if (!UI[lang]) lang = "uz";
+  if (!LANGS.includes(lang)) lang = LANGS[0];
   document.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => render(b.dataset.lang)));
   render(lang);
 })();
 </script>
-<a href="../../" style="position:fixed;left:12px;top:12px;z-index:50;font:600 12px/1 system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.72);padding:7px 11px;border-radius:999px;text-decoration:none">← Namuna sayt: SiteSmith Studio</a>
+<a href="../../" style="position:fixed;left:50%;transform:translateX(-50%);top:8px;z-index:50;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.72);padding:7px 11px;border-radius:999px;text-decoration:none">← Namuna sayt: SiteSmith Studio</a>
 </body>
 </html>
